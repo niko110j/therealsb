@@ -1,0 +1,71 @@
+name: CI/CD - Umbraco Local Deploy
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    outputs:
+      artifact-path: ${{ steps.publish.outputs.artifact-path }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Publish project
+        id: publish
+        run: |
+          dotnet publish --configuration Release --output ./publish
+          echo "artifact-path=./publish" >> $GITHUB_OUTPUT
+
+      - name: Upload publish folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: published-site
+          path: ./publish
+
+  deploy:
+    runs-on: self-hosted
+    needs: build
+
+    steps:
+      - name: Download published site
+        uses: actions/download-artifact@v3
+        with:
+          name: published-site
+          path: ./published
+
+      - name: Deploy to local IIS
+        shell: pwsh
+        run: |
+          $source = "$pwd\published"
+          $destination = "C:\inetpub\wwwroot\YourSite"
+          
+          Write-Host "Deploying from $source to $destination"
+          
+          # Optional: Stop app pool if needed
+          # Stop-WebAppPool -Name 'YourAppPool'
+
+          # Remove old files (be careful!)
+          Remove-Item "$destination\*" -Recurse -Force -ErrorAction SilentlyContinue
+
+          # Copy new files
+          Copy-Item "$source\*" $destination -Recurse
+
+          # Optional: Start app pool again
+          # Start-WebAppPool -Name 'YourAppPool'
+
+          Write-Host "Deployment complete!"
