@@ -13,5 +13,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: echo "✅ Runner is working"
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Publish project
+        id: publish
+        run: |
+          dotnet publish --configuration Release --output ./publish
+          echo "artifact-path=./publish" >> $GITHUB_OUTPUT
 
