@@ -32,7 +32,7 @@ jobs:
           echo "artifact-path=./publish" >> $GITHUB_OUTPUT
 
       - name: Upload publish folder
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: published-site
           path: ./publish
