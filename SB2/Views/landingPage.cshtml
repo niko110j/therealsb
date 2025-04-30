@@ -1,0 +1,32 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+    Layout = "master.cshtml";
+}
+
+@Html.Partial("Login", new SB2.Models.ViewModels.LoginViewModel())
+
+
+<div class="order-buttons" style="text-align:center; padding: 2rem;">
+    <h2>Ordrehandlinger</h2>
+
+    <a href="/orderpage" class="btn">Opret ny ordre</a>
+    <a href="/allorders" class="btn">Se alle ordre</a>
+    <a href="/kundehub" class="btn">KundeHub</a>
+</div>
+
+<style>
+    .order-buttons .btn {
+        display: inline-block;
+        margin: 10px;
+        padding: 12px 24px;
+        background-color: #007acc;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: background-color 0.3s;
+    }
+
+    .order-buttons .btn:hover {
+        background-color: #005fa3;
+    }
+</style>
