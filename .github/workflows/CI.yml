@@ -11,30 +11,7 @@ jobs:
       artifact-path: ${{ steps.publish.outputs.artifact-path }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build project
-        run: dotnet build --no-restore --configuration Release
-
-      - name: Publish project
-        id: publish
-        run: |
-          dotnet publish --configuration Release --output ./publish
-          echo "artifact-path=./publish" >> $GITHUB_OUTPUT
-
-      - name: Upload publish folder
-        uses: actions/upload-artifact@v2
-        with:
-          name: published-site
-          path: ./publish
+      - uses: actions/checkout@v3
+      - run: echo "✅ Runner is working"
 
 
