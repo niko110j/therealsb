@@ -3,16 +3,13 @@
     Layout = "master.cshtml";
 }
 
-@Html.Partial("Login", new SB2.Models.ViewModels.LoginViewModel())
+<article>
 
+    @await Html.PartialAsync("partials/loginStatus")
 
-<div class="order-buttons" style="text-align:center; padding: 2rem;">
-    <h2>Ordrehandlinger</h2>
+    @await Html.PartialAsync("partials/loginPartial")
+</article>
 
-    <a href="/orderpage" class="btn">Opret ny ordre</a>
-    <a href="/allorders" class="btn">Se alle ordre</a>
-    <a href="/kundehub" class="btn">KundeHub</a>
-</div>
 
 <style>
     .order-buttons .btn {

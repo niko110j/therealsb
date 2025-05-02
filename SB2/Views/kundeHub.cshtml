@@ -1,7 +1,13 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inject Umbraco.Cms.Core.Services.IMemberService MemberService
+@inject Umbraco.Cms.Core.Security.IMemberManager MemberManager
 @{
     Layout = "Master.cshtml";
     var companyName = "Nordisk Byg A/S"; // fake session/identity
+
+    var MM = MemberManager;
+    var currentMember = await MM.GetCurrentMemberAsync();
+    var isLoggedIn = Context.User?.Identity?.IsAuthenticated ?? false;
 }
 
 <style>
@@ -51,6 +57,8 @@
         color: red;
     }
 </style>
+
+@if(isLoggedIn) {
 
 <h1>Velkommen, @companyName</h1>
 <p>Dette er dit KundeHub, hvor du kan se dine aktive ordrer, betalinger og abonnement.</p>
@@ -122,3 +130,4 @@
     <p>Udløber: <strong class="@(DateTime.Now > new DateTime(2025, 12, 31) ? "expired" : "status")">31-12-2025</strong></p>
     <p>Status: <span class="status">Aktiv</span></p>
 </div>
+}
