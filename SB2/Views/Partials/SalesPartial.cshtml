@@ -1,0 +1,22 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Extensions
+
+@{
+    var bookingTypesContainer = Umbraco.Content(Guid.Parse("f3ee3ccc-c508-4bd8-9a70-b79dd317b6b6"));
+    var bookings = bookingTypesContainer.Children();
+}
+
+<h2>Available Booking Types</h2>
+
+@foreach (var booking in bookings)
+{
+    <div>
+        <h3>@booking.Name</h3>
+
+        @if (booking.ContentType.Alias == "printOrder")
+        {
+            <p>Price: @booking.Value("price") kr.</p>
+        }
+      
+    </div>
+}

@@ -1,0 +1,56 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Microsoft.AspNetCore.Identity
+@using Umbraco.Cms.Core.Security
+@inject IMemberManager MemberManager
+
+@{
+    Layout = "master.cshtml";
+    var memberTask = MemberManager.GetCurrentMemberAsync();
+    memberTask.Wait(); // Wait is okay in Razor (if necessary)
+    var currentMember = memberTask.Result;
+
+    if (currentMember != null)
+    {
+        var rolesTask = MemberManager.GetRolesAsync(currentMember);
+        rolesTask.Wait();
+        var roles = rolesTask.Result;
+
+        if (roles.Contains("SalesReps"))
+        {
+            <div class="order-buttons" style="text-align:center; padding: 2rem;">
+                <h2>Ordrehandlinger</h2>
+
+                <a href="/orderpage" class="btn">Opret ny ordre</a>
+                <a href="/allorderpage" class="btn">Se alle ordre</a>
+            </div>
+        }
+        else if (roles.Contains("CompanyProfiles"))
+        {
+            @Html.Partial("CustomerPartial")
+        }
+        else
+        {
+            <p>You do not have access to this section.</p>
+        }
+    }
+    else
+    {
+        <p>Please <a href="/login">log in</a> to view this page.</p>
+    }
+}
+<style>
+    .order-buttons .btn {
+        display: inline-block;
+        margin: 10px;
+        padding: 12px 24px;
+        background-color: #007acc;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: background-color 0.3s;
+    }
+
+        .order-buttons .btn:hover {
+            background-color: #005fa3;
+        }
+</style>
