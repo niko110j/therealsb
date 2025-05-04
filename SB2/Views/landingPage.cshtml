@@ -5,11 +5,20 @@
 
 <article>
 
-    @await Html.PartialAsync("partials/loginStatus")
+    @using Microsoft.AspNetCore.Http
+    @using Umbraco.Extensions
 
-    @await Html.PartialAsync("partials/loginPartial")
+    @if (!User.Identity?.IsAuthenticated ?? true)
+    {
+        @await Html.PartialAsync("partials/LoginPartial")
+    }
+    else
+    {
+        @await Html.PartialAsync("LoginStatus")
+    }
+
+  
 </article>
-
 
 <style>
     .order-buttons .btn {

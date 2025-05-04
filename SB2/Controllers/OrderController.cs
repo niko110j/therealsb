@@ -8,6 +8,7 @@ using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Cms.Web.Website.Controllers;
 
+namespace SB2.Controllers { 
 public class OrderController : SurfaceController
 {
     private readonly IContentService _contentService;
@@ -28,13 +29,19 @@ public class OrderController : SurfaceController
     [HttpGet]
     public IActionResult LoadBookingPartial(string type)
     {
-        return type switch
+        if (string.IsNullOrEmpty(type)) return Content(""); // No selection made
+
+        switch (type.ToLower())
         {
-            "Print" => PartialView("BookingTypes/_PrintOrder"),
-            "Radio" => PartialView("BookingTypes/_RadioOrder"),
-            "Digital" => PartialView("BookingTypes/_DigitalOrder"),
-            _ => Content("")
-        };
+            case "print":
+                return PartialView("~/Views/Partials/_PrintOrder.cshtml");
+            case "radio":
+                return PartialView("~/Views/Partials/_RadioOrder.cshtml");
+            case "digital":
+                return PartialView("~/Views/Partials/_DigitalOrder.cshtml");
+            default:
+                return Content(""); // fallback
+        }
     }
 
     [HttpPost]
@@ -43,11 +50,11 @@ public class OrderController : SurfaceController
         if (!ModelState.IsValid)
             return CurrentUmbracoPage();
 
-        if (model.SelectedBookingType == "Print")
-        {
-            if (model.PrintQuantity == null || model.PrintUnitPrice == null)
-                ModelState.AddModelError("", "Udfyld alle felter for Print-orderen.");
-        }
+        //if (model.SelectedBookingType == "Print")
+        //{
+        //    if (model.PrintQuantity == null || model.PrintUnitPrice == null)
+        //        ModelState.AddModelError("", "Udfyld alle felter for Print-orderen.");
+        //}
 
 
         // Combine general and booking-specific info here and save
@@ -56,4 +63,4 @@ public class OrderController : SurfaceController
     }
 
 }
-
+}

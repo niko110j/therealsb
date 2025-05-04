@@ -1,8 +1,22 @@
-﻿<fieldset>
+﻿
+<fieldset>
     <legend>Print Order</legend>
-    <label>Antal:</label>
-    <input type="number" name="PrintQuantity" min="1" />
 
-    <label>Pris per enhed:</label>
-    <input type="number" name="PrintUnitPrice" step="0.01" />
+    <label for="startDate">Startdato:</label>
+    <input type="date" id="startDate" name="startDate" />
+
+    <label for="endDate">Slutdato:</label>
+    <input type="date" id="endDate" name="endDate" />
+
+    <label for="newspaper">Avis:</label>
+    <input type="text" id="newspaper" name="newspaper" />
+
+    <label for="placement">Placering:</label>
+    <input type="text" id="placement" name="placement" />
+
+    <label for="size">Størrelse:</label>
+    <input type="text" id="size" name="size" />
+
+    <label for="priceBySizeAndPlacement">Pris:</label>
+    <input type="number" step="0.01" id="priceBySizeAndPlacement" name="priceBySizeAndPlacement" />
 </fieldset>

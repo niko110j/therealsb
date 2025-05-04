@@ -7,7 +7,7 @@
 var bookings = bookingTypesContainer.Children();
 }
 
-
+@* @model SB2.Models.ViewModels.OrderFormViewModel *@
 <h2>Opret Ny Ordre</h2>
 
 <form method="post" action="/umbraco/surface/order/CreateOrder" class="order-form">
@@ -35,6 +35,13 @@ var bookings = bookingTypesContainer.Children();
         <input type="text" id="filledBy" name="FilledBy" placeholder="Navn på medarbejder" />
     </fieldset>
 
+    <select id="bookingTypeSelect" name="BookingType">
+        <option value="">-- Vælg bookingtype --</option>
+        <option value="print">Print</option>
+        <option value="radio">Radio</option>
+        <option value="digital">Digital</option>
+    </select>
+
     <div id="bookingTypeFormContainer">
         <!-- Booking form partial will load here -->
     </div>
@@ -42,10 +49,15 @@ var bookings = bookingTypesContainer.Children();
 </form>
 
 @section Scripts {
+
+
     <script>
+
+        console.log("BookingType selector loaded");
         document.getElementById('bookingTypeSelect').addEventListener('change', function () {
             const type = this.value;
-            fetch(`/order/loadbookingpartial?type=${type}`)
+            console.log("Selected type:", type);
+            fetch(`/umbraco/surface/order/loadbookingpartial?type=${type}`)
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById('bookingTypeFormContainer').innerHTML = html;
@@ -53,6 +65,8 @@ var bookings = bookingTypesContainer.Children();
         });
     </script>
 }
+
+
 
 <style>
     .order-form {

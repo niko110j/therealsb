@@ -42,10 +42,14 @@
 
     <main>
         @RenderBody()
+       
+
     </main>
 
     <footer>
         <p>&copy; @DateTime.Now.Year - Mit firma</p>
     </footer>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
