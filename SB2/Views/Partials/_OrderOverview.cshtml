@@ -1,0 +1,23 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@inject IContentService ContentService
+@using SB2.Models.ViewModels
+@using Umbraco.Cms.Core.Services
+
+@{
+    var model = new AllOrdersViewModel();
+    var container = ContentService.GetById(Guid.Parse("0f415ccc-12c3-4ab2-a58d-a2e8f568d41c"));
+    if (container != null)
+    {
+        var children = ContentService.GetPagedChildren(container.Id, 0, 100, out _);
+        foreach (var child in children)
+        {
+            model.Orders.Add(new OrderListItem
+                    {
+                        Name = child.Name,
+                        ClientName = child.GetValue<string>("clientName"),
+                        ClientEmail = child.GetValue<string>("clientEmail"),
+                        BookingType = child.GetValue<string>("bookingType")
+                    });
+        }
+    }
+}

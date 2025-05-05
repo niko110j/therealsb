@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SB2.Models.ViewModels;
+using System.Text.Json;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Routing;
@@ -44,23 +45,39 @@ public class OrderController : SurfaceController
         }
     }
 
-    [HttpPost]
-    public IActionResult SubmitOrder(OrderFormViewModel model)
-    {
-        if (!ModelState.IsValid)
-            return CurrentUmbracoPage();
-
-        //if (model.SelectedBookingType == "Print")
-        //{
-        //    if (model.PrintQuantity == null || model.PrintUnitPrice == null)
-        //        ModelState.AddModelError("", "Udfyld alle felter for Print-orderen.");
-        //}
+        [HttpPost]
+       
+        public IActionResult CreateOrder(OrderFormViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return BadRequest("Model state invalid: " + string.Join(", ", errors));
+            }
 
 
-        // Combine general and booking-specific info here and save
-        // Redirect to confirmation page or orders list
-        return RedirectToCurrentUmbracoPage();
+            // Get the parent node (Orders container)
+            var ordersContainer = _contentService.GetById(Guid.Parse("0f415ccc-12c3-4ab2-a58d-a2e8f568d41c"));
+            if (ordersContainer == null)
+                return StatusCode(500, "Order container not found");
+
+            // Create order node
+            var order = _contentService.Create($"Order - {DateTime.Now:yyyyMMddHHmmss}", ordersContainer.Id, "order");
+
+            order.SetValue("clientName", model.ClientName);
+            order.SetValue("clientEmail", model.ClientEmail);
+            order.SetValue("clientPhone", model.ClientPhone);
+            order.SetValue("salespersonName", model.SalespersonName);
+            order.SetValue("filledBy", model.FilledBy);
+            order.SetValue("bookingType", model.BookingType);
+            order.SetValue("bookingFields", JsonSerializer.Serialize(model.BookingFields));
+
+            _contentService.Save(order);
+
+            TempData["SuccessMessage"] = "Ordre gemt!";
+            return Redirect("/allorderpage");
+        }
+
+
     }
-
-}
 }

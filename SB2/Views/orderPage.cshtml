@@ -1,69 +1,133 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+﻿@using Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Cms.Core.Models.Blocks
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @using Umbraco.Extensions
+
 @{
-	Layout = "master.cshtml";
-    var bookingTypesContainer = Umbraco.Content(Guid.Parse("f3ee3ccc-c508-4bd8-9a70-b79dd317b6b6"));
-var bookings = bookingTypesContainer.Children();
+    Layout = "master.cshtml";
+    var bookingTypes = Model.Value<BlockListModel>("bookingTypes");
 }
 
-@* @model SB2.Models.ViewModels.OrderFormViewModel *@
 <h2>Opret Ny Ordre</h2>
 
-<form method="post" action="/umbraco/surface/order/CreateOrder" class="order-form">
+<form asp-controller="Order" asp-action="CreateOrder" method="post" enctype="multipart/form-data">
+
     <fieldset>
         <legend>Kundeoplysninger</legend>
-        <label for="clientName">Navn:</label>
-        <input type="text" id="clientName" name="ClientName" placeholder="F.eks. Jens Jensen" required />
+        <label for="ClientName">Navn:</label>
+        <input type="text" id="ClientName" name="ClientName" required />
 
-        <label for="clientEmail">Email:</label>
-        <input type="email" id="clientEmail" name="ClientEmail" placeholder="jens@example.com" required />
+        <label for="ClientEmail">Email:</label>
+        <input type="email" id="ClientEmail" name="ClientEmail" required />
 
-        <label for="clientPhone">Telefon:</label>
-        <input type="tel" id="clientPhone" name="ClientPhone" placeholder="12 34 56 78" />
+        <label for="ClientPhone">Telefon:</label>
+        <input type="tel" id="ClientPhone" name="ClientPhone" />
     </fieldset>
 
     <fieldset>
         <legend>Sælgeroplysninger</legend>
-        <label for="salespersonName">Sælgernavn:</label>
-        <input type="text" id="salespersonName" name="SalespersonName" placeholder="Navn på sælger" />
+        <label for="SalespersonName">Sælgernavn:</label>
+        <input type="text" id="SalespersonName" name="SalespersonName" />
     </fieldset>
 
     <fieldset>
         <legend>Udfyldt af</legend>
-        <label for="filledBy">Udfyldt af:</label>
-        <input type="text" id="filledBy" name="FilledBy" placeholder="Navn på medarbejder" />
+        <label for="FilledBy">Udfyldt af:</label>
+        <input type="text" id="FilledBy" name="FilledBy" />
     </fieldset>
 
-    <select id="bookingTypeSelect" name="BookingType">
-        <option value="">-- Vælg bookingtype --</option>
-        <option value="print">Print</option>
-        <option value="radio">Radio</option>
-        <option value="digital">Digital</option>
-    </select>
+    @if (bookingTypes != null && bookingTypes.Any())
+    {
+        <label for="bookingTypeSelect">Vælg bookingtype:</label>
+        <select id="bookingTypeSelect" name="BookingType">
+            <option value="">-- Vælg bookingtype --</option>
+            @foreach (var bookingType in bookingTypes)
+            {
+                <option value="bookingType_@bookingType.Content.Key">
+                    @(bookingType.Content.Value<string>("BookingTypeName"))
+                </option>
+            }
+        </select>
 
-    <div id="bookingTypeFormContainer">
-        <!-- Booking form partial will load here -->
-    </div>
+        @foreach (var bookingType in bookingTypes)
+        {
+            var typeKey = $"bookingType_{bookingType.Content.Key}";
+            var fields = bookingType.Content.Value<BlockListModel>("bookingFields");
+
+            <div class="booking-fields" id="@typeKey" style="display:none;">
+                <h4>@(bookingType.Content.Value<string>("title"))</h4>
+
+                @foreach (var field in fields)
+                {
+                    var label = field.Content.Value<string>("fieldLabel");
+                    var type = field.Content.Value<string>("fieldType");
+                    var isRequired = field.Content.Value<bool>("isRequired");
+                    var name = Html.Raw(label.Replace(" ", "_").ToLower());
+
+                    <div class="form-group">
+                        <label>@label</label>
+
+                        @switch (type?.ToLowerInvariant())
+                        {
+                            case "text":
+                                <input type="text" name="@name" class="form-control" @(isRequired ? "required" : "") />
+                                break;
+                            case "number":
+                                <input type="number" name="@name" class="form-control" @(isRequired ? "required" : "") />
+                                break;
+                            case "textarea":
+                                <textarea name="@name" class="form-control" @(isRequired ? "required" : "")></textarea>
+                                break;
+                            case "date":
+                                <input type="date" name="@name" class="form-control" @(isRequired ? "required" : "") />
+                                break;
+                            case "dropdown":
+                                var options = field.Content.Value<string>("options")?.Split(',') ?? Array.Empty<string>();
+                                <select name="@name" class="form-control" @(isRequired ? "required" : "")>
+                                    @foreach (var option in options)
+                                    {
+                                        <option value="@option.Trim()">@option.Trim()</option>
+                                    }
+                                </select>
+                                break;
+                            default:
+                                <input type="text" name="@name" class="form-control" />
+                                break;
+                        }
+                    </div>
+                }
+            </div>
+        }
+    }
+
     <button type="submit">Opret ordre</button>
 </form>
 
+
 @section Scripts {
 
-
     <script>
+        document.getElementById('bookingTypeSelect')?.addEventListener('change', function () {
+            const selectedId = this.value;
 
-        console.log("BookingType selector loaded");
-        document.getElementById('bookingTypeSelect').addEventListener('change', function () {
-            const type = this.value;
-            console.log("Selected type:", type);
-            fetch(`/umbraco/surface/order/loadbookingpartial?type=${type}`)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById('bookingTypeFormContainer').innerHTML = html;
+            document.querySelectorAll('.booking-fields').forEach(el => {
+                const isVisible = el.id === selectedId;
+
+                // Show or hide the container
+                el.style.display = isVisible ? 'block' : 'none';
+
+                // Enable or disable all form fields inside
+                el.querySelectorAll('input, select, textarea').forEach(input => {
+                    input.disabled = !isVisible;
                 });
+            });
         });
+
+        // Optionally trigger it on page load (to handle preselected value)
+        document.getElementById('bookingTypeSelect')?.dispatchEvent(new Event('change'));
     </script>
+
+
 }
 
 
