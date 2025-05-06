@@ -43,9 +43,12 @@
             <option value="">-- Vælg bookingtype --</option>
             @foreach (var bookingType in bookingTypes)
             {
-                <option value="bookingType_@bookingType.Content.Key">
+                <option value="@(bookingType.Content.Value<string>("bookingTypeName"))"
+                        data-fields-id="bookingType_@bookingType.Content.Key">
                     @(bookingType.Content.Value<string>("BookingTypeName"))
                 </option>
+              
+
             }
         </select>
 
@@ -54,7 +57,7 @@
             var typeKey = $"bookingType_{bookingType.Content.Key}";
             var fields = bookingType.Content.Value<BlockListModel>("bookingFields");
 
-            <div class="booking-fields" id="@typeKey" style="display:none;">
+            <div class="booking-fields" id="bookingType_@bookingType.Content.Key" style="display:none;">
                 <h4>@(bookingType.Content.Value<string>("title"))</h4>
 
                 @foreach (var field in fields)
@@ -70,20 +73,20 @@
                         @switch (type?.ToLowerInvariant())
                         {
                             case "text":
-                                <input type="text" name="@name" class="form-control" @(isRequired ? "required" : "") />
+                                <input type="text" name="BookingFields[@name]" class="form-control" @(isRequired ? "required" : "") />
                                 break;
                             case "number":
-                                <input type="number" name="@name" class="form-control" @(isRequired ? "required" : "") />
+                                <input type="number" name="BookingFields[@name]" class="form-control" @(isRequired ? "required" : "") />
                                 break;
                             case "textarea":
-                                <textarea name="@name" class="form-control" @(isRequired ? "required" : "")></textarea>
+                                <textarea name="BookingFields[@name]" class="form-control" @(isRequired ? "required" : "")></textarea>
                                 break;
                             case "date":
-                                <input type="date" name="@name" class="form-control" @(isRequired ? "required" : "") />
+                                <input type="date" name="BookingFields[@name]" class="form-control" @(isRequired ? "required" : "") />
                                 break;
                             case "dropdown":
                                 var options = field.Content.Value<string>("options")?.Split(',') ?? Array.Empty<string>();
-                                <select name="@name" class="form-control" @(isRequired ? "required" : "")>
+                                <select name="BookingFields[@name]" class="form-control" @(isRequired ? "required" : "")>
                                     @foreach (var option in options)
                                     {
                                         <option value="@option.Trim()">@option.Trim()</option>
@@ -91,7 +94,7 @@
                                 </select>
                                 break;
                             default:
-                                <input type="text" name="@name" class="form-control" />
+                                <input type="text" name="BookingFields[@name]" class="form-control" />
                                 break;
                         }
                     </div>
@@ -108,7 +111,8 @@
 
     <script>
         document.getElementById('bookingTypeSelect')?.addEventListener('change', function () {
-            const selectedId = this.value;
+            const selectedOption = this.options[this.selectedIndex];
+            const selectedId = selectedOption.getAttribute("data-fields-id");
 
             document.querySelectorAll('.booking-fields').forEach(el => {
                 const isVisible = el.id === selectedId;
@@ -126,6 +130,11 @@
         // Optionally trigger it on page load (to handle preselected value)
         document.getElementById('bookingTypeSelect')?.dispatchEvent(new Event('change'));
     </script>
+
+ 
+    }
+});
+
 
 
 }
