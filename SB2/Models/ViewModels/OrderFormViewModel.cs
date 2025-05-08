@@ -24,6 +24,8 @@ namespace SB2.Models.ViewModels
 
         // Dynamic booking-specific fields from the partial form
         public Dictionary<string, string> BookingFields { get; set; } = new();
+
+        public DateTime Created { get; set; }
     }
 
 }

@@ -3,21 +3,39 @@
 @using SB2.Models.ViewModels
 @using Umbraco.Cms.Core.Services
 
-@{
-    var model = new AllOrdersViewModel();
-    var container = ContentService.GetById(Guid.Parse("0f415ccc-12c3-4ab2-a58d-a2e8f568d41c"));
-    if (container != null)
-    {
-        var children = ContentService.GetPagedChildren(container.Id, 0, 100, out _);
-        foreach (var child in children)
-        {
-            model.Orders.Add(new OrderListItem
-                    {
-                        Name = child.Name,
-                        ClientName = child.GetValue<string>("clientName"),
-                        ClientEmail = child.GetValue<string>("clientEmail"),
-                        BookingType = child.GetValue<string>("bookingType")
-                    });
-        }
-    }
+
+
+@if (Model.Orders.Any())
+{
+    <table class="excel-style">
+        <thead>
+            <tr>
+                <th>Ordre Navn</th>
+                <th>Kunde Navn</th>
+                <th>Kunde Email</th>
+                <th>Sælger</th>
+                <th>Oprettet af</th>
+                <th>Bookingtype</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td>@order.Name</td>
+                    <td>@order.ClientName</td>
+                    <td>@order.ClientEmail</td>
+                    <td>@order.SalesPersonName</td>
+                    <td>@order.FilledBy</td>
+                    <td>@order.BookingType</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
+else
+{
+    <p>Ingen ordrer fundet.</p>
+}
+
+

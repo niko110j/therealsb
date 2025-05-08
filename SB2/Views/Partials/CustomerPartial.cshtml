@@ -10,54 +10,6 @@
     var isLoggedIn = Context.User?.Identity?.IsAuthenticated ?? false;
 }
 
-<style>
-    .hub-section {
-        background-color: #f9f9f9;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        border-radius: 10px;
-        border: 1px solid #ddd;
-    }
-
-    .hub-section h2 {
-        margin-top: 0;
-        font-size: 1.5rem;
-    }
-
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-    }
-
-    table.dashboard-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-family: 'Segoe UI', sans-serif;
-    }
-
-    table.dashboard-table th,
-    table.dashboard-table td {
-        border: 1px solid #ccc;
-        padding: 10px 14px;
-        text-align: left;
-    }
-
-    table.dashboard-table th {
-        background-color: #efefef;
-        font-weight: 600;
-    }
-
-    .status {
-        font-weight: bold;
-        color: green;
-    }
-
-    .expired {
-        color: red;
-    }
-</style>
-
 @if(isLoggedIn) {
 
 <h1>Velkommen, @companyName</h1>

@@ -5,6 +5,10 @@
         public string Name { get; set; }
         public string ClientName { get; set; }
         public string ClientEmail { get; set; }
+
+        public string SalesPersonName { get; set; }
+
+        public string FilledBy { get; set; }
         public string BookingType { get; set; }
     }
 

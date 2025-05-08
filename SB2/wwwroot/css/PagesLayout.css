@@ -1,0 +1,174 @@
+/*Master*/
+
+ body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header, footer {
+            background-color: #222;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        a {
+            color: #007acc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+/*Login And Overview*/
+
+ .order-buttons .btn {
+        display: inline-block;
+        margin: 10px;
+        padding: 12px 24px;
+        background-color: #007acc;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: background-color 0.3s;
+    }
+
+        .order-buttons .btn:hover {
+            background-color: #005fa3;
+        }
+
+/*KundeHub*/
+
+ .hub-section {
+        background-color: #f9f9f9;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+    }
+
+    .hub-section h2 {
+        margin-top: 0;
+        font-size: 1.5rem;
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    table.dashboard-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    table.dashboard-table th,
+    table.dashboard-table td {
+        border: 1px solid #ccc;
+        padding: 10px 14px;
+        text-align: left;
+    }
+
+    table.dashboard-table th {
+        background-color: #efefef;
+        font-weight: 600;
+    }
+
+    .status {
+        font-weight: bold;
+        color: green;
+    }
+
+    .expired {
+        color: red;
+    }
+
+/*AllOrdersPage*/
+
+ h1 {
+     margin-bottom: 1rem;
+ }
+
+ p {
+     font-size: 16px;
+     margin-bottom: 2rem;
+ }
+
+/* OrderPage*/
+  .order-form {
+     max-width: 600px;
+     margin: 0 auto;
+ }
+
+ fieldset {
+     margin-bottom: 2rem;
+     padding: 1rem;
+     border: 1px solid #ccc;
+     border-radius: 8px;
+ }
+
+ label {
+     display: block;
+     margin-top: 1rem;
+ }
+
+ input {
+     width: 100%;
+     padding: 0.5rem;
+     margin-top: 0.3rem;
+     border: 1px solid #ccc;
+     border-radius: 4px;
+ }
+
+ button {
+     padding: 0.7rem 1.5rem;
+     background-color: #007acc;
+     color: white;
+     border: none;
+     border-radius: 5px;
+     cursor: pointer;
+ }
+
+     button:hover {
+         background-color: #005fa3;
+     }
+
+ 
+/*_OrderOverview*/
+
+
+  table.excel-style {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 14px;
+        margin-top: 2rem;
+    }
+
+        table.excel-style th,
+        table.excel-style td {
+            border: 1px solid #ccc;
+            padding: 12px 16px;
+            text-align: left;
+        }
+
+        table.excel-style th {
+            background-color: #f0f0f0;
+            font-weight: 600;
+        }
+
+        table.excel-style tbody tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        table.excel-style tbody tr:hover {
+            background-color: #eef5ff;
+        }

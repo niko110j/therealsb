@@ -28,13 +28,11 @@
         <legend>Sælgeroplysninger</legend>
         <label for="SalespersonName">Sælgernavn:</label>
         <input type="text" id="SalespersonName" name="SalespersonName" />
+           <label for="FilledBy">Udfyldt af:</label>
+        <input type="text" id="FilledBy" name="FilledBy" />
     </fieldset>
 
     <fieldset>
-        <legend>Udfyldt af</legend>
-        <label for="FilledBy">Udfyldt af:</label>
-        <input type="text" id="FilledBy" name="FilledBy" />
-    </fieldset>
 
     @if (bookingTypes != null && bookingTypes.Any())
     {
@@ -101,7 +99,7 @@
                 }
             </div>
         }
-    }
+    } </fieldset>
 
     <button type="submit">Opret ordre</button>
 </form>
@@ -129,54 +127,13 @@
 
         // Optionally trigger it on page load (to handle preselected value)
         document.getElementById('bookingTypeSelect')?.dispatchEvent(new Event('change'));
-    </script>
-
- 
-    }
-});
-
-
-
-}
-
-
-
-<style>
-    .order-form {
-        max-width: 600px;
-        margin: 0 auto;
+    </script> 
     }
 
-    fieldset {
-        margin-bottom: 2rem;
-        padding: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-    }
 
-    label {
-        display: block;
-        margin-top: 1rem;
-    }
 
-    input {
-        width: 100%;
-        padding: 0.5rem;
-        margin-top: 0.3rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
 
-    button {
-        padding: 0.7rem 1.5rem;
-        background-color: #007acc;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
 
-        button:hover {
-            background-color: #005fa3;
-        }
-</style>
+
+
+

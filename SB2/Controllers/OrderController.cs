@@ -13,8 +13,9 @@ namespace SB2.Controllers {
 public class OrderController : SurfaceController
 {
     private readonly IContentService _contentService;
+        private readonly IUmbracoDatabase _db;
 
-    public OrderController(
+        public OrderController(
         IUmbracoContextAccessor contextAccessor,
         IUmbracoDatabaseFactory dbFactory,
         ServiceContext services,
@@ -25,9 +26,10 @@ public class OrderController : SurfaceController
         : base(contextAccessor, dbFactory, services, appCaches, logger, urlProvider)
     {
         _contentService = contentService;
-    }
+            _db = dbFactory.CreateDatabase();
+        }
 
-    [HttpGet]
+    [HttpGet] //Is this needed? 
     public IActionResult LoadBookingPartial(string type)
     {
         if (string.IsNullOrEmpty(type)) return Content(""); // No selection made
@@ -46,8 +48,8 @@ public class OrderController : SurfaceController
     }
 
         [HttpPost]
-       
-        public IActionResult CreateOrder(OrderFormViewModel model)
+
+        public IActionResult CreateOrder(Order model)
         {
             if (!ModelState.IsValid)
             {
@@ -55,28 +57,27 @@ public class OrderController : SurfaceController
                 return BadRequest("Model state invalid: " + string.Join(", ", errors));
             }
 
+            // Extract dynamic booking fields as JSON
+            var bookingFieldsJson = JsonSerializer.Serialize(model.BookingFields);
 
-            // Get the parent node (Orders container)
-            var ordersContainer = _contentService.GetById(Guid.Parse("0f415ccc-12c3-4ab2-a58d-a2e8f568d41c"));
-            if (ordersContainer == null)
-                return StatusCode(500, "Order container not found");
+            var order = new Order
+            {
+                ClientName = model.ClientName,
+                ClientEmail = model.ClientEmail,
+                SalespersonName = model.SalespersonName,
+                FilledBy = model.FilledBy,
+                BookingType = model.BookingType,
+                BookingFields = bookingFieldsJson,
+                Created = DateTime.UtcNow
+            };
 
-            // Create order node
-            var order = _contentService.Create($"Order - {DateTime.Now:yyyyMMddHHmmss}", ordersContainer.Id, "order");
-
-            order.SetValue("clientName", model.ClientName);
-            order.SetValue("clientEmail", model.ClientEmail);
-            order.SetValue("clientPhone", model.ClientPhone);
-            order.SetValue("salespersonName", model.SalespersonName);
-            order.SetValue("filledBy", model.FilledBy);
-            order.SetValue("bookingType", model.BookingType);
-            order.SetValue("bookingFields", JsonSerializer.Serialize(model.BookingFields));
-
-            _contentService.Save(order);
+            // Save to the DB
+            _db.Insert(order); // ← assumes _db is your NPoco database instance
 
             TempData["SuccessMessage"] = "Ordre gemt!";
             return Redirect("/allorderpage");
         }
+
 
 
     }
