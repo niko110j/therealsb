@@ -49,7 +49,7 @@ public class OrderController : SurfaceController
 
         [HttpPost]
 
-        public IActionResult CreateOrder(Order model)
+        public IActionResult CreateOrder(OrderFormViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -71,11 +71,26 @@ public class OrderController : SurfaceController
                 Created = DateTime.UtcNow
             };
 
-            // Save to the DB
-            _db.Insert(order); // ← assumes _db is your NPoco database instance
 
-            TempData["SuccessMessage"] = "Ordre gemt!";
+            // Save to the DB
+            _db.Insert(order);
+
+            foreach (var field in model.BookingFields)
+            {
+                var bookingField = new BookingField
+                {
+                    OrderId = order.Id,
+                    FieldKey = field.Key,
+                    FieldValue = field.Value
+                };
+
+                _db.Insert(bookingField);
+            }
+
+            TempData["SuccessMessage"] = "Ordre og bookingdetaljer gemt!";
             return Redirect("/allorderpage");
+
+          
         }
 
 

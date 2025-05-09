@@ -5,28 +5,26 @@
 @{
     Layout = "master.cshtml";
 }
+@inject Umbraco.Cms.Infrastructure.Persistence.IUmbracoDatabase _database
 
 @{
     var model = new AllOrdersViewModel();
-    var container = ContentService.GetById(Guid.Parse("0f415ccc-12c3-4ab2-a58d-a2e8f568d41c"));
+    var dbOrders = _database.Fetch<Order>("SELECT * FROM Orders ORDER BY Created DESC");
 
-    if (container != null)
+    foreach (var order in dbOrders)
     {
-        var children = ContentService.GetPagedChildren(container.Id, 0, 100, out _);
-        foreach (var child in children)
-        {
-            model.Orders.Add(new OrderListItem
-                    {
-                        Name = child.Name,
-                        ClientName = child.GetValue<string>("clientName"),
-                        ClientEmail = child.GetValue<string>("clientEmail"),
-                        SalesPersonName = child.GetValue<string>("salesPersonName"),
-                        FilledBy = child.GetValue<string>("filledBy"),
-                        BookingType = child.GetValue<string>("bookingType")
-                    });
-        }
+        model.Orders.Add(new OrderListItem
+                {
+                    // Name = $"Order - {order.Created:yyyyMMddHHmmss}",
+                    ClientName = order.ClientName,
+                    ClientEmail = order.ClientEmail,
+                    SalesPersonName = order.SalespersonName,
+                    FilledBy = order.FilledBy,
+                    BookingType = order.BookingType
+                });
     }
 }
+
 
 <h1>Se alle ordrer</h1>
 

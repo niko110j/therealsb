@@ -10,6 +10,8 @@
 
         public string FilledBy { get; set; }
         public string BookingType { get; set; }
+
+        public DateTime Created { get; set; }
     }
 
 }

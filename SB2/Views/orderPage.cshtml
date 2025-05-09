@@ -63,7 +63,8 @@
                     var label = field.Content.Value<string>("fieldLabel");
                     var type = field.Content.Value<string>("fieldType");
                     var isRequired = field.Content.Value<bool>("isRequired");
-                    var name = Html.Raw(label.Replace(" ", "_").ToLower());
+                    var name = label.Replace(" ", "_").ToLowerInvariant();
+
 
                     <div class="form-group">
                         <label>@label</label>
