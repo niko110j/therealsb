@@ -1,35 +1,8 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
-@using SB2.Models.ViewModels
-@using Umbraco.Cms.Core.Services
-@inject IContentService ContentService
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Web.Common.PublishedModels.AllOrdersPage>
 @{
     Layout = "master.cshtml";
 }
-@inject Umbraco.Cms.Infrastructure.Persistence.IUmbracoDatabase _database
-
-@{
-    var model = new AllOrdersViewModel();
-    var dbOrders = _database.Fetch<Order>("SELECT * FROM Orders ORDER BY Created DESC");
-
-    foreach (var order in dbOrders)
-    {
-        model.Orders.Add(new OrderListItem
-                {
-                    // Name = $"Order - {order.Created:yyyyMMddHHmmss}",
-                    ClientName = order.ClientName,
-                    ClientEmail = order.ClientEmail,
-                    SalesPersonName = order.SalespersonName,
-                    FilledBy = order.FilledBy,
-                    BookingType = order.BookingType
-                });
-    }
-}
-
-
 <h1>Se alle ordrer</h1>
-
 <p>Herunder ses alle ordrer fra registrerede virksomheder i systemet.</p>
-@await Html.PartialAsync("_OrderOverview", model)
 
-
-
+@await Component.InvokeAsync("OrderOverview")

@@ -1,13 +1,8 @@
 ﻿@model SB2.Models.ViewModels.AllOrdersViewModel
-@inject IContentService ContentService
-@using SB2.Models.ViewModels
-@using Umbraco.Cms.Core.Services
-
-
 
 @if (Model.Orders.Any())
 {
-    <table class="excel-style">
+    <table>
         <thead>
             <tr>
                 <th>Ordre Navn</th>
@@ -37,5 +32,3 @@ else
 {
     <p>Ingen ordrer fundet.</p>
 }
-
-
