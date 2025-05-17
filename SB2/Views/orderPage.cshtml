@@ -7,6 +7,7 @@
     Layout = "master.cshtml";
     var bookingTypes = Model.Value<BlockListModel>("bookingTypes");
 }
+<div class="container">
 
 <h2>Opret Ny Ordre</h2>
 
@@ -84,7 +85,7 @@
                                 <input type="date" name="BookingFields[@name]" class="form-control" @(isRequired ? "required" : "") />
                                 break;
                             case "dropdown":
-                                var options = field.Content.Value<string>("options")?.Split(',') ?? Array.Empty<string>();
+                                var options = field.Content.Value<string>("DropdownOptions")?.Split(',') ?? Array.Empty<string>();
                                 <select name="BookingFields[@name]" class="form-control" @(isRequired ? "required" : "")>
                                     @foreach (var option in options)
                                     {
@@ -104,7 +105,7 @@
 
     <button type="submit">Opret ordre</button>
 </form>
-
+</div>
 
 @section Scripts {
 

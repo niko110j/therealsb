@@ -5,12 +5,14 @@
     Layout = "master.cshtml";
     
 }
+
+<div class="container">
 <h1>Se alle ordrer</h1>
 <p>Herunder ses alle ordrer fra registrerede virksomheder i systemet.</p>
 
 @if (Model.Orders.Any())
 {
-    <table>
+    <table class="excel-style">
         <thead>
             <tr>
                 <th>Ordre Navn</th>
@@ -40,3 +42,5 @@ else
 {
     <p>Ingen ordrer fundet.</p>
 }
+
+</div>
