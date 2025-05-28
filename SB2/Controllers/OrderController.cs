@@ -15,6 +15,7 @@ namespace SB2.Controllers {
     {
         private readonly IContentService _contentService;
         private readonly IUmbracoDatabase _db;
+        private readonly IMemberService _memberService;
 
         public OrderController(
         IUmbracoContextAccessor contextAccessor,
@@ -23,29 +24,14 @@ namespace SB2.Controllers {
         AppCaches appCaches,
         IProfilingLogger logger,
         IPublishedUrlProvider urlProvider,
-        IContentService contentService)
+        IContentService contentService,
+        IMemberService memberService)
         : base(contextAccessor, dbFactory, services, appCaches, logger, urlProvider)
         {
             _contentService = contentService;
             _db = dbFactory.CreateDatabase();
-        }
-
-        [HttpGet] //Is this needed? 
-        public IActionResult LoadBookingPartial(string type)
-        {
-            if (string.IsNullOrEmpty(type)) return Content(""); // No selection made
-
-            switch (type.ToLower())
-            {
-                case "print":
-                    return PartialView("~/Views/Partials/_PrintOrder.cshtml");
-                case "radio":
-                    return PartialView("~/Views/Partials/_RadioOrder.cshtml");
-                case "digital":
-                    return PartialView("~/Views/Partials/_DigitalOrder.cshtml");
-                default:
-                    return Content(""); // fallback
-            }
+            _memberService = memberService;
+            _memberService = memberService;
         }
 
         [HttpPost]
@@ -93,29 +79,6 @@ namespace SB2.Controllers {
 
 
         }
-
-        //public IActionResult AllOrdersPage(ContentModel model)
-        //{
-        //    var orders = _db.Fetch<Order>("SELECT * FROM Orders ORDER BY Created DESC");
-
-        //    var viewModel = new AllOrdersViewModel(model.Content)
-        //    {
-                
-        //        Orders = orders.Select(o => new OrderListItem
-        //        {
-        //            //Name = o.Id,
-        //            ClientName = o.ClientName,
-        //            ClientEmail = o.ClientEmail,
-        //            SalespersonName = o.SalespersonName,
-        //            BookingType = o.BookingType,
-        //            Created = o.Created
-        //        }).ToList()
-        //    };
-        //    return View("allOrdersPage", viewModel);
-
-        //}
-
-
 
 
     }

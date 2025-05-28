@@ -1,4 +1,5 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels
+@inject Umbraco.Cms.Core.Services.IMemberService MemberService
 @using Umbraco.Cms.Core.Models.Blocks
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @using Umbraco.Extensions
@@ -6,6 +7,8 @@
 @{
     Layout = "master.cshtml";
     var bookingTypes = Model.Value<BlockListModel>("bookingTypes");
+    var members = MemberService.GetAllMembers().Where(m => m.ContentTypeAlias == "salesMember");
+    var companies = MemberService.GetAllMembers().Where(m=> m.ContentTypeAlias == "companyMember");
 }
 <div class="container">
 
@@ -17,14 +20,19 @@
         <legend>Kundeoplysninger</legend>
         <label for="ClientName">Firma:</label>
             <select id="ClientName" name="ClientName">
-                <option value="">Vælg firma</option>
-                <option value="Firma A">Firma A</option>
-                <option value="Firma B">Firma B</option>
-                <option value="Firma C">Firma C</option>
+                <option value="">Vælg Firma</option>
+                @foreach (var company in companies)
+                {
+                    <option value="@company.Name" data-email="@company.Email">@company.Name </option>
+                }
             </select>
+            <p>Er firmaet ikke her? Kontakt administrator for at oprette dem i systemet.</p>
 
-        <label for="ClientEmail">Email:</label>
-        <input value="companyemail@example.com"type="email" id="ClientEmail" name="ClientEmail" required />
+            <div id="emailWrapper" style="display: none;">
+                <label for="ClientEmail">Email:</label>
+                <input type="email" id="ClientEmail" name="ClientEmail" required />
+            </div>
+
 
         <label for="ClientPhone">Telefon:</label>
         <input value="12345678"type="tel" id="ClientPhone" name="ClientPhone" />
@@ -35,17 +43,18 @@
             <label for="SalespersonName">Oprettet af:</label>
             <select id="SalespersonName" name="SalespersonName">
                 <option value="">Vælg sælger</option>
-                <option value="Mads Mikkelsen">Mads Mikkelsen</option>
-                <option value="Sofie Sørensen">Sofie Sørensen</option>
-                <option value="Peter Poulsen">Peter Poulsen</option>
-                
+                @foreach (var member in members)
+                {
+                    <option value="@member.Username">@member.Name - @member.Username</option>
+                }
             </select>
            <label for="FilledBy">Udfyldt af:</label>
             <select id="FilledBy" name="FilledBy">
                 <option value="">Vælg dit navn her</option>
-                <option value="Mads Mikkelsen">Mads Mikkelsen</option>
-                <option value="Sofie Sørensen">Sofie Sørensen</option>
-                <option value="Peter Poulsen">Peter Poulsen</option>
+                @foreach (var member in members)
+                {
+                    <option value="@member.Username">@member.Name - @member.Username</option>
+                }
             </select>
     </fieldset>
 
@@ -145,6 +154,21 @@
 
         // Optionally trigger it on page load (to handle preselected value)
         document.getElementById('bookingTypeSelect')?.dispatchEvent(new Event('change'));
+
+        document.getElementById('ClientName')?.addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const email = selectedOption.getAttribute('data-email') || '';
+            const emailWrapper = document.getElementById('emailWrapper');
+            const emailInput = document.getElementById('ClientEmail');
+
+            if (email && selectedOption.value) {
+                emailWrapper.style.display = 'block';
+                emailInput.value = email;
+            } else {
+                emailWrapper.style.display = 'none';
+                emailInput.value = '';
+            }
+        });
     </script> 
     }
 
