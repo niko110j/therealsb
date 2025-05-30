@@ -45,7 +45,7 @@ namespace SB2.Controllers {
                 _db.Update(order);
             }
 
-            return RedirectToCurrentUmbracoPage();
+            return Redirect("/allorderpage");
         }
 
 

@@ -34,15 +34,23 @@
                     <td>@order.SalespersonName</td>
                     <td>@order.FilledBy</td>
                         <td>
-                            <form method="post" asp-controller="Order" asp-action="ChangeStatus">
-                                <input type="hidden" name="orderId" value="@order.Id" />
-                                <select name="newStatus">
-                                    <option value="Kladde" selected="@((order.Status == "Kladde") ? "selected" : null)">Kladde</option>
-                                    <option value="Sendt til booker" selected="@((order.Status == "Sendt til booker") ? "selected" : null)">Sendt til booker</option>
-                                </select>
-                                <button type="submit">Opdater</button>
-                            </form>
+                            @if (order.Status == "Draft" )
+                            {
+                                <form method="post" action="/umbraco/Surface/Order/ChangeStatus">
+                                    <input type="hidden" name="orderId" value="@order.Id" />
+                                    <select name="newStatus">
+                                        <option value="Kladde" selected="@(order.Status == "Kladde" ? "selected" : null)">Kladde</option>
+                                        <option value="Sendt til booker" selected="@(order.Status == "Sendt til booker" ? "selected" : null)">Sendt til booker</option>
+                                    </select>
+                                    <button type="submit">Opdater</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span>@order.Status</span>
+                            }
                         </td>
+
                     <td>@order.BookingType</td>
                 </tr>
             }
