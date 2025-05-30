@@ -64,17 +64,19 @@ namespace SB2.Controllers {
 
             foreach (var field in model.BookingFields)
             {
+#pragma warning disable CS8601 // Possible null reference assignment.
                 var bookingField = new BookingField
                 {
                     OrderId = order.Id,
                     FieldKey = field.Key,
                     FieldValue = field.Value
                 };
+#pragma warning restore CS8601 // Possible null reference assignment.
 
                 _db.Insert(bookingField);
             }
 
-            TempData["SuccessMessage"] = "Ordre og bookingdetaljer gemt!";
+            //TempData["SuccessMessage"] = "Ordre og bookingdetaljer gemt!";
             return Redirect("/allorderpage");
 
 

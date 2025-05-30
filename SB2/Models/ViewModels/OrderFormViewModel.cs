@@ -12,18 +12,18 @@ namespace SB2.Models.ViewModels
         [EmailAddress]
         public string ClientEmail { get; set; }
 
-        public string ClientPhone { get; set; }
+        public string? ClientPhone { get; set; }
 
-        public string SalespersonName { get; set; }
+        public string? SalespersonName { get; set; }
 
-        public string FilledBy { get; set; }
+        public string? FilledBy { get; set; }
 
         // Booking type (e.g., "print", "radio", etc.)
         
-        public string BookingType { get; set; }
+        public string? BookingType { get; set; }
 
         // Dynamic booking-specific fields from the partial form
-        public Dictionary<string, string> BookingFields { get; set; } = new();
+        public Dictionary<string?, string?> BookingFields { get; set; } = new();
 
         public DateTime Created { get; set; }
     }

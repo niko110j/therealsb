@@ -29,7 +29,8 @@ namespace SB2.Tests
             _mockDb = new Mock<IUmbracoDatabase>();
             ServiceContext mockServices = null!; // adjust if you plan to test anything requiring services
 
-            var mockCaches = new Mock<AppCaches>();
+            var realAppCaches = AppCaches.NoCache;
+
             var mockLogger = new Mock<IProfilingLogger>();
             var mockUrlProvider = new Mock<IPublishedUrlProvider>();
             var mockContentService = new Mock<IContentService>();
@@ -41,7 +42,7 @@ namespace SB2.Tests
                 mockContextAccessor.Object,
                 mockDbFactory.Object,
                 mockServices,
-                mockCaches.Object,
+                realAppCaches,
                 mockLogger.Object,
                 mockUrlProvider.Object,
                 mockContentService.Object,
