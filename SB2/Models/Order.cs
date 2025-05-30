@@ -11,6 +11,8 @@ public class Order
     public string SalespersonName { get; set; }
 
     public string FilledBy { get; set; }
+
+    public string Status { get; set; }
     public string BookingType { get; set; }
 
     // We'll store a JSON string of dynamic fields here

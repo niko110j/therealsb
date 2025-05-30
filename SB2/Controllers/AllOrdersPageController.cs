@@ -39,6 +39,7 @@ namespace SB2.Controllers
                     ClientEmail = o.ClientEmail,
                     SalespersonName = o.SalespersonName,
                     FilledBy = o.FilledBy,
+                    Status = o.Status,
                     BookingType = o.BookingType,
                     Created = o.Created
                 }).ToList()

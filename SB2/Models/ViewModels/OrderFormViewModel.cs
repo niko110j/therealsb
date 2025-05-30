@@ -18,6 +18,8 @@ namespace SB2.Models.ViewModels
 
         public string? FilledBy { get; set; }
 
+        public string? Status { get; set; }
+
         // Booking type (e.g., "print", "radio", etc.)
         
         public string? BookingType { get; set; }

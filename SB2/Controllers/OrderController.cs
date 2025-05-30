@@ -33,6 +33,21 @@ namespace SB2.Controllers {
             _memberService = memberService;
             _memberService = memberService;
         }
+        [HttpPost]
+        public IActionResult ChangeStatus(int orderId, string newStatus)
+        {
+            // Fetch the order
+            var order = _db.SingleOrDefault<Order>("WHERE Id = @0", orderId);
+            if (order != null)
+            {
+                // Update status
+                order.Status = newStatus;
+                _db.Update(order);
+            }
+
+            return RedirectToCurrentUmbracoPage();
+        }
+
 
         [HttpPost]
 
@@ -53,6 +68,7 @@ namespace SB2.Controllers {
                 ClientEmail = model.ClientEmail,
                 SalespersonName = model.SalespersonName,
                 FilledBy = model.FilledBy,
+                Status = model.Status,
                 BookingType = model.BookingType,
                 BookingFields = bookingFieldsJson,
                 Created = DateTime.UtcNow

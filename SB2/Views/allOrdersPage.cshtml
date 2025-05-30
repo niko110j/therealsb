@@ -20,6 +20,7 @@
                 <th>Kunde Email</th>
                 <th>Sælger</th>
                 <th>Oprettet af</th>
+                <th>Status</th>
                 <th>Bookingtype</th>
             </tr>
         </thead>
@@ -27,11 +28,21 @@
             @foreach (var order in Model.Orders)
             {
                 <tr>
-                    <td>Name</td>
+                    <td>@order.Id</td>
                     <td>@order.ClientName</td>
                     <td>@order.ClientEmail</td>
                     <td>@order.SalespersonName</td>
                     <td>@order.FilledBy</td>
+                        <td>
+                            <form method="post" asp-controller="Order" asp-action="ChangeStatus">
+                                <input type="hidden" name="orderId" value="@order.Id" />
+                                <select name="newStatus">
+                                    <option value="Kladde" selected="@((order.Status == "Kladde") ? "selected" : null)">Kladde</option>
+                                    <option value="Sendt til booker" selected="@((order.Status == "Sendt til booker") ? "selected" : null)">Sendt til booker</option>
+                                </select>
+                                <button type="submit">Opdater</button>
+                            </form>
+                        </td>
                     <td>@order.BookingType</td>
                 </tr>
             }
