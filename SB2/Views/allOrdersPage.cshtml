@@ -15,7 +15,7 @@
     <table class="excel-style">
         <thead>
             <tr>
-                <th>Ordre Navn</th>
+                <th>Ordre ID</th>
                 <th>Kunde Navn</th>
                 <th>Kunde Email</th>
                 <th>Sælger</th>
@@ -34,9 +34,10 @@
                     <td>@order.SalespersonName</td>
                     <td>@order.FilledBy</td>
                         <td>
-                            @if (order.Status == "Draft" )
+                            @if (order.Status == "Kladde" )
                             {
-                                <form method="post" action="/umbraco/Surface/Order/ChangeStatus">
+                                <form method="post" asp-controller="AllOrders" asp-action="ChangeStatus">
+
                                     <input type="hidden" name="orderId" value="@order.Id" />
                                     <select name="newStatus">
                                         <option value="Kladde" selected="@(order.Status == "Kladde" ? "selected" : null)">Kladde</option>

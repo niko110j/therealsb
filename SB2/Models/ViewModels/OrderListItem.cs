@@ -2,7 +2,7 @@
 {
     public class OrderListItem
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string ClientName { get; set; }
         public string ClientEmail { get; set; }
 

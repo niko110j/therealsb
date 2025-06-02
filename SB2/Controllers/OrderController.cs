@@ -33,21 +33,7 @@ namespace SB2.Controllers {
             _memberService = memberService;
             _memberService = memberService;
         }
-        [HttpPost]
-        public IActionResult ChangeStatus(int orderId, string newStatus)
-        {
-            // Fetch the order
-            var order = _db.SingleOrDefault<Order>("WHERE Id = @0", orderId);
-            if (order != null)
-            {
-                // Update status
-                order.Status = newStatus;
-                _db.Update(order);
-            }
-
-            return Redirect("/allorderpage");
-        }
-
+    
 
         [HttpPost]
 

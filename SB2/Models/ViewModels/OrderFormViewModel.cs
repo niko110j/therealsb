@@ -4,6 +4,7 @@ namespace SB2.Models.ViewModels
 {
     public class OrderFormViewModel
     {
+        public int Id { get; set; }
         // General order information
         [Required]
         public string ClientName { get; set; }

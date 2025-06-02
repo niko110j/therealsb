@@ -23,6 +23,22 @@ namespace SB2.Controllers
         {
             _db = databaseFactory.CreateDatabase();
         }
+
+        [HttpPost]
+        public IActionResult ChangeStatus(int orderId, string newStatus)
+        {
+            // Fetch the order
+            var order = _db.SingleOrDefault<Order>("WHERE Id = @0", orderId);
+            if (order != null)
+            {
+                // Update status
+                order.Status = newStatus;
+                _db.Update(order);
+            }
+
+            return Redirect("/allorderpage");
+        }
+
         [HttpGet]
         public IActionResult Index(ContentModel model)
         {
@@ -34,7 +50,7 @@ namespace SB2.Controllers
 
                 Orders = orders.Select(o => new OrderListItem
                 {
-                    //Name = o.Id,
+                    Id = o.Id,
                     ClientName = o.ClientName,
                     ClientEmail = o.ClientEmail,
                     SalespersonName = o.SalespersonName,
