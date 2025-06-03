@@ -16,11 +16,11 @@
 {
     <div class="login-status">
 
-        <p>Welcome back <strong>@Context?.User?.Identity?.Name</strong>!</p>
+        <p>Velkommen tilbage <strong>@Context?.User?.Identity?.Name</strong>!</p>
 
         @using (Html.BeginUmbracoForm<UmbLoginStatusController>("HandleLogout", new { RedirectUrl = logoutModel.RedirectUrl }))
         {
-            <button type="submit" class="btn btn-primary">Log out</button>
+            <button type="submit" class="btn btn-primary">Log ud</button>
         }
 
     </div>

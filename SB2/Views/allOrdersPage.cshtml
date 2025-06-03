@@ -22,6 +22,7 @@
                 <th>Oprettet af</th>
                 <th>Status</th>
                 <th>Bookingtype</th>
+                 <th>Kopiér</th>
             </tr>
         </thead>
         <tbody>
@@ -36,7 +37,7 @@
                         <td>
                             @if (order.Status == "Kladde" )
                             {
-                                <form method="post" asp-controller="AllOrders" asp-action="ChangeStatus">
+                                <form method="post" asp-controller="Order" asp-action="ChangeStatus">
 
                                     <input type="hidden" name="orderId" value="@order.Id" />
                                     <select name="newStatus">
@@ -53,6 +54,12 @@
                         </td>
 
                     <td>@order.BookingType</td>
+                        <td>
+                            <form method="post" asp-controller="Order" asp-action="DuplicateOrder">
+                                <input type="hidden" name="orderId" value="@order.Id" />
+                                <button type="submit">Kopiér</button>
+                            </form>
+                        </td>
                 </tr>
             }
         </tbody>

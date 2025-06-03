@@ -6,6 +6,7 @@ using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Cms.Web.Common.Controllers;
+using System.Text.Json;
 
 namespace SB2.Controllers
 {
@@ -24,7 +25,7 @@ namespace SB2.Controllers
             _db = databaseFactory.CreateDatabase();
             _memberManager = memberManager;
         }
-        [HttpGet]
+     
         [HttpGet]
         public async Task<IActionResult> Index(ContentModel model)
         {
@@ -62,6 +63,9 @@ namespace SB2.Controllers
 
             return View("overview", viewModel);
         }
+
+
+
 
     }
 }

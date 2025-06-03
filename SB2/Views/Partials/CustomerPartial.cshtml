@@ -12,40 +12,10 @@
 
 @if(isLoggedIn) {
 
-<h1>Velkommen, @companyName</h1>
+    <h1>Velkommen, <strong>@currentMember.Name</strong></h1>
 <p>Dette er dit KundeHub, hvor du kan se dine aktive ordrer, betalinger og abonnement.</p>
 
 <div class="dashboard-grid">
-
-    <!-- Orders -->
-    <div class="hub-section">
-        <h2>Dine ordrer</h2>
-        <table class="dashboard-table">
-            <thead>
-                <tr>
-                    <th>Ordre ID</th>
-                    <th>Dato</th>
-                    <th>Status</th>
-                        <th>Gentag</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>#2001</td>
-                    <td>20-04-2025</td>
-                    <td class="status">Leveret</td>
-                    <td><a> Kopier ordre</a></td>
-                </tr>
-                <tr>
-                    <td>#2003</td>
-                    <td>22-04-2025</td>
-                    <td class="status">Under behandling</td>
-                        <td><a> Kopier ordre</a></td>
-                </tr>
-                    
-            </tbody>
-        </table>
-    </div>
 
     <!-- Payments -->
     <div class="hub-section">

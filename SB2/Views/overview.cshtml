@@ -26,8 +26,7 @@
             @await Html.PartialAsync("CustomerPartial")
 
             <div class="container">
-                <h1>Se alle ordrer</h1>
-                <p>Herunder ses alle ordrer fra registrerede virksomheder i systemet.</p>
+                <h1>Se alle deres ordre her</h1>
 
                 @if (Model.Orders.Any())
                 {
@@ -54,6 +53,13 @@
                                     <td>@order.FilledBy</td>
                                     <td>@order.Status</td>
                                     <td>@order.BookingType</td>
+                                    <td>
+                                        <button type="button" class="btn" onclick="alert('Email sendt til: @order.SalespersonName. Du modtager snarest muligt en bekræftelse fra din salgsrepræsentant.')">
+                                            Anmod om gentagelse
+                                        </button>
+
+                                    </td>
+
                                 </tr>
                             }
                         </tbody>

@@ -84,6 +84,47 @@ namespace SB2.Controllers {
 
         }
 
+        [HttpPost]
+        public IActionResult DuplicateOrder(int orderId)
+        {
+            // Fetch the original order
+            var existingOrder = _db.SingleOrDefault<Order>("WHERE Id = @0", orderId);
+
+            if (existingOrder != null)
+            {
+                var duplicatedOrder = new Order
+                {
+                    ClientName = existingOrder.ClientName,
+                    ClientEmail = existingOrder.ClientEmail,
+                    SalespersonName = existingOrder.SalespersonName,
+                    FilledBy = existingOrder.FilledBy,
+                    Status = "Kladde", // Always start duplicated orders as draft
+                    BookingType = existingOrder.BookingType,
+                    BookingFields = existingOrder.BookingFields,
+                    Created = DateTime.UtcNow
+                };
+
+                _db.Insert(duplicatedOrder);
+            }
+
+            // ✅ Redirect safely without causing binding issues
+            return Redirect("/allorderpage");
+        }
+
+        [HttpPost]
+        public IActionResult ChangeStatus(int orderId, string newStatus)
+        {
+            // Fetch the order
+            var order = _db.SingleOrDefault<Order>("WHERE Id = @0", orderId);
+            if (order != null)
+            {
+                // Update status
+                order.Status = newStatus;
+                _db.Update(order);
+            }
+
+            return Redirect("/allorderpage");
+        }
 
     }
 
