@@ -13,7 +13,6 @@ namespace SB2.Models.ViewModels
         [EmailAddress]
         public string ClientEmail { get; set; }
 
-        public string? ClientPhone { get; set; }
 
         public string? SalespersonName { get; set; }
 

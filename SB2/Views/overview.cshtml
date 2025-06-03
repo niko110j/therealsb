@@ -1,12 +1,10 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
-@using Microsoft.AspNetCore.Identity
-@using Umbraco.Cms.Core.Security
-@inject IMemberManager MemberManager
-
+﻿@inject Umbraco.Cms.Core.Security.IMemberManager MemberManager
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<SB2.Models.ViewModels.AllOrdersViewModel>
 @{
     Layout = "master.cshtml";
+    
     var memberTask = MemberManager.GetCurrentMemberAsync();
-    memberTask.Wait(); // Wait is okay in Razor (if necessary)
+    memberTask.Wait();
     var currentMember = memberTask.Result;
 
     if (currentMember != null)
@@ -19,15 +17,53 @@
         {
             <div class="order-buttons" style="text-align:center; padding: 2rem;">
                 <h2>Ordrehandlinger</h2>
-
                 <a href="/orderpage" class="btn">Opret ny ordre</a>
                 <a href="/allorderpage" class="btn">Se alle ordre</a>
             </div>
         }
         else if (roles.Contains("CompanyProfiles"))
         {
-            @Html.Partial("CustomerPartial")
+            @await Html.PartialAsync("CustomerPartial")
 
+            <div class="container">
+                <h1>Se alle ordrer</h1>
+                <p>Herunder ses alle ordrer fra registrerede virksomheder i systemet.</p>
+
+                @if (Model.Orders.Any())
+                {
+                    <table class="excel-style">
+                        <thead>
+                            <tr>
+                                <th>Ordre ID</th>
+                                <th>Kunde Navn</th>
+                                <th>Kunde Email</th>
+                                <th>Sælger</th>
+                                <th>Oprettet af</th>
+                                <th>Status</th>
+                                <th>Bookingtype</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model.Orders)
+                            {
+                                <tr>
+                                    <td>@order.Id</td>
+                                    <td>@order.ClientName</td>
+                                    <td>@order.ClientEmail</td>
+                                    <td>@order.SalespersonName</td>
+                                    <td>@order.FilledBy</td>
+                                    <td>@order.Status</td>
+                                    <td>@order.BookingType</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>Ingen ordrer fundet.</p>
+                }
+            </div>
         }
         else
         {
@@ -39,4 +75,3 @@
         <p>Please <a href="/login">log in</a> to view this page.</p>
     }
 }
-
