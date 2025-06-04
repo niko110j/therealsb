@@ -13,9 +13,9 @@ using Umbraco.Cms.Web.Website.Controllers;
 namespace SB2.Controllers {
     public class OrderController : SurfaceController
     {
-        private readonly IContentService _contentService;
+       
         private readonly IUmbracoDatabase _db;
-        private readonly IMemberService _memberService;
+       
 
         public OrderController(
         IUmbracoContextAccessor contextAccessor,
@@ -23,15 +23,14 @@ namespace SB2.Controllers {
         ServiceContext services,
         AppCaches appCaches,
         IProfilingLogger logger,
-        IPublishedUrlProvider urlProvider,
-        IContentService contentService,
-        IMemberService memberService)
+        IPublishedUrlProvider urlProvider
+        
+       )
         : base(contextAccessor, dbFactory, services, appCaches, logger, urlProvider)
         {
-            _contentService = contentService;
+            
             _db = dbFactory.CreateDatabase();
-            _memberService = memberService;
-            _memberService = memberService;
+           
         }
     
 
