@@ -9,6 +9,11 @@ body {
     padding: 0;
     line-height: 1.6;
 }
+.logout-button-container {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
 
 /* === Layout Helpers === */
 .container {
