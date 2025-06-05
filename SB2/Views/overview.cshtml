@@ -26,50 +26,76 @@
             @await Html.PartialAsync("CustomerPartial")
 
             <div class="container">
-                <h1>Se alle deres ordre her</h1>
-
+                <h1>Se alle jeres ordre her</h1>
+              
                 @if (Model.Orders.Any())
                 {
+
                     <table class="excel-style">
                         <thead>
                             <tr>
-                                <th>Ordre ID</th>
-                                <th>Kunde Navn</th>
-                                <th>Kunde Email</th>
-                                <th>Sælger</th>
-                                <th>Oprettet af</th>
-                                <th>Status</th>
-                                <th>Bookingtype</th>
+                                <th>Ordre ID</th>                                
+                                <th>Sælger</th>                                
+                                <th>Bookingtype</th>                              
+                                <th>Se detaljer</th>
+                                <th>Bestil igen</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var order in Model.Orders)
                             {
                                 <tr>
-                                    <td>@order.Id</td>
-                                    <td>@order.ClientName</td>
-                                    <td>@order.ClientEmail</td>
-                                    <td>@order.SalespersonName</td>
-                                    <td>@order.FilledBy</td>
-                                    <td>@order.Status</td>
-                                    <td>@order.BookingType</td>
+                                    <td>@order.Id</td>                                    
+                                   <td>@order.SalespersonName</td>                                
+                                     <td>@order.BookingType</td>                                 
                                     <td>
-                                        <button type="button" class="btn" onclick="alert('Email sendt til: @order.SalespersonName. Du modtager snarest muligt en bekræftelse fra din salgsrepræsentant.')">
+                                        <button type="button" onclick="toggleDetails(@order.Id)">Vis detaljer</button>
+                                    </td>
+                                    <td>
+                                        <button type="button" onclick="alert('Email sendt til: @order.SalespersonName. Du modtager snarest muligt en bekræftelse fra din salgsrepræsentant.')">
                                             Anmod om gentagelse
                                         </button>
+                                        </td>
 
+                                </tr>
+                                <tr id="details-@order.Id" style="display:none;">
+                                    <td colspan="5">
+                                        <div>
+                                            <strong>Order @order.Id - Detaljer</strong>
+                                            <p><b>Kunde:</b> @order.ClientName</p>
+                                            <p><b>Kunde email:</b> @order.ClientEmail</p>
+                                            <p><b>Status:</b> @order.Status</p>
+
+                                            @if (order.BookingFields?.Any() == true)
+                                            {
+                                                <h4>Bookingfelter</h4>
+                                                <ul>
+                                                    @foreach (var field in order.BookingFields)
+                                                    {
+                                                        <li><strong>@field.Key:</strong> @field.Value</li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <p>Ingen bookingfelter fundet.</p>
+                                            }
+                                        </div>
                                     </td>
-
                                 </tr>
                             }
                         </tbody>
+
                     </table>
                 }
                 else
                 {
                     <p>Ingen ordrer fundet.</p>
                 }
+
+
             </div>
+
         }
         else
         {
@@ -81,3 +107,10 @@
         <p>Please <a href="/login">log in</a> to view this page.</p>
     }
 }
+
+<script>
+    function toggleDetails(orderId) {
+        const row = document.getElementById('details-' + orderId);
+        row.style.display = row.style.display === 'table-row' ? 'none' : 'table-row';
+    }
+</script>

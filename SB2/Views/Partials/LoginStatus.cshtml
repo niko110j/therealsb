@@ -16,7 +16,11 @@
 {
     <div class="login-status">
 
-        <p>Velkommen tilbage <strong>@Context?.User?.Identity?.Name</strong>!</p>
+        <p>Velkommen tilbage <strong>@Context?.User?.Identity?.Name</strong>! Vi er glade for du bruger SmarterBooking.</p>
+        <br/>
+        <p>Klik på "SmarterBooking" for at komme til forsiden.</p>
+
+        <br/>
 
         @using (Html.BeginUmbracoForm<UmbLoginStatusController>("HandleLogout", new { RedirectUrl = logoutModel.RedirectUrl }))
         {

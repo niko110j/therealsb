@@ -42,6 +42,7 @@ namespace SB2.Controllers
                     FilledBy = o.FilledBy,
                     Status = o.Status,
                     BookingType = o.BookingType,
+                    BookingFieldsJson = o.BookingFields,
                     Created = o.Created
                 }).ToList()
             };

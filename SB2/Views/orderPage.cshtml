@@ -127,7 +127,7 @@
         }
     } </fieldset>
     <fieldset>
-            <label for="Status">Udfyldt af:</label>
+            <label for="Status">Vælg status her:</label>
             <select id="Status" name="Status">
                 <option value="">Vælg status her</option>             
                     <option value="Kladde">Gem som kladde</option>
@@ -135,7 +135,7 @@
             </select>
     </fieldset>
 
-    <button type="submit">Opret ordre</button>
+    <button type="submit" class="btn">Opret ordre</button>
 </form>
 </div>
 
@@ -159,7 +159,6 @@
             });
         });
 
-        // Optionally trigger it on page load (to handle preselected value)
         document.getElementById('bookingTypeSelect')?.dispatchEvent(new Event('change'));
 
         document.getElementById('ClientName')?.addEventListener('change', function () {

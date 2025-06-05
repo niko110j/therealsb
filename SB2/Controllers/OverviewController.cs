@@ -33,7 +33,7 @@ namespace SB2.Controllers
 
             if (currentMember == null)
             {
-                return Unauthorized(); // or redirect to login
+                return Unauthorized(); 
             }
 
             var allOrders = _db.Fetch<Order>("SELECT * FROM Orders ORDER BY Created DESC");
@@ -57,6 +57,7 @@ namespace SB2.Controllers
                     FilledBy = o.FilledBy,
                     Status = o.Status,
                     BookingType = o.BookingType,
+                    BookingFieldsJson = o.BookingFields,
                     Created = o.Created
                 }).ToList()
             };

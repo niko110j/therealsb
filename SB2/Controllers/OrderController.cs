@@ -97,7 +97,7 @@ namespace SB2.Controllers {
                     ClientEmail = existingOrder.ClientEmail,
                     SalespersonName = existingOrder.SalespersonName,
                     FilledBy = existingOrder.FilledBy,
-                    Status = "Kladde", // Always start duplicated orders as draft
+                    Status = "Kladde", 
                     BookingType = existingOrder.BookingType,
                     BookingFields = existingOrder.BookingFields,
                     Created = DateTime.UtcNow
@@ -106,7 +106,7 @@ namespace SB2.Controllers {
                 _db.Insert(duplicatedOrder);
             }
 
-            // ✅ Redirect safely without causing binding issues
+     
             return Redirect("/allorderpage");
         }
 
@@ -122,10 +122,18 @@ namespace SB2.Controllers {
                 _db.Update(order);
             }
 
+            if (newStatus == "Sendt til booker")
+            {
+                TempData["StatusChanged"] = "Tak for bestillingen! Ordren er nu sendt til booker.";
+            }
+
             return Redirect("/allorderpage");
         }
 
+      
+
+
     }
 
-    
+
 }

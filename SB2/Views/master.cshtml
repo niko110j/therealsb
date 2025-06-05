@@ -5,8 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@Model.Value("pageTitle")</title>
-
-    <link rel="stylesheet" href="~/css/PagesLayout.css" />
+    @{
+        var random = new Random().Next(999999);
+    }
+    <link rel="stylesheet" href="~/css/PagesLayout.css?v=@random"   />
 
 </head>
 <body>
